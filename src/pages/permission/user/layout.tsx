@@ -1,0 +1,139 @@
+import {regex_email,regex_mobile} from '@/utils/regexstr'
+import {
+    COLUMN_TEXT,
+    COLUMN_DATETIME,
+    COLUMN_GENDER,
+    COLUMN_PASSWORD,
+    COMPONENT_BUTTON,
+    COMPONENT_ICON_BUTTON,
+    FORM_FIELD_TEXT,
+    FORM_FIELD_SELECT,
+    BUTTON_TYPE_PRIMARY,
+    BUTTON_TYPE_DANGER,
+    BUTTON_TYPE_DASHED,
+    BUTTON_TYPE_GHOST,
+    BUTTON_TYPE_DEFAULT,
+    ICON_TYPE_ADD,
+    ICON_TYPE_CANCEL,
+    ICON_TYPE_DELETE,
+    ICON_TYPE_GET,
+    ICON_TYPE_EDIT,
+    ICON_TYPE_GROUP,
+    ICON_TYPE_RESET_KEY,
+    ICON_TYPE_EXPORT,
+    ICON_TYPE_RELOAD,
+    ICON_TYPE_SUBMIT,
+    ICON_TYPE_ASSIGN,
+    ACTION_TYPE_PAGE,
+    ACTION_TYPE_MODAL,
+    ACTION_TYPE_DELETE,
+    ACTION_TYPE_EXPORT,
+    ACTION_TYPE_RELOAD,
+    ACTION_TYPE_DELETE_PERMANENT,
+    ACTION_TYPE_RESET,
+    ACTION_TYPE_CANCEL,
+    ACTION_TYPE_SUBMIT,
+    ACTION_TYPE_PASSWORDRESET,
+    ACTION_TYPE_GROUPING,
+    COLUMN_CONTENT,
+    ACTION_TYPE_ASSIGN
+} from '@/builder/helper'
+// /api/v1/users?pageSize=10&current=1
+// table
+const tablecolumnfield=[
+    {title:'NO',dataIndex:'id',key:'id',hideInColumn:false,hideInSearch:true,type:COLUMN_TEXT},
+    {title:'昵称',dataIndex:'nickname',key:'nickname',hideInColumn:false,hideInSearch:false,type:COLUMN_TEXT},
+    {title:'姓名',dataIndex:'realname',key:'realname',hideInColumn:false,hideInSearch:false,type:COLUMN_TEXT},
+    {title:'性别',dataIndex:'gender',key:'gender',hideInColumn:false,hideInSearch:false,type:COLUMN_GENDER,data:[
+        {value:1,title:'男'},{value:2,title:'女'},{value:3,title:'其他'}
+    ]},
+    {title:'邮箱',dataIndex:'email',key:'email',hideInColumn:false,hideInSearch:false,type:COLUMN_TEXT},
+    {title:'手机号',dataIndex:'mobile',key:'mobile',hideInColumn:false,hideInSearch:false,type:COLUMN_TEXT},
+    {title:'密码',dataIndex:'password',key:'password',hideInColumn:true,hideInSearch:true,type:COLUMN_PASSWORD},
+    {title:'身份证号',dataIndex:'id_number',key:'id_number',hideInColumn:false,hideInSearch:false,type:COLUMN_TEXT},
+    {title:'上次登录时间',dataIndex:'last_login_time',key:'last_login_time',hideInColumn:false,hideInSearch:true,type:COLUMN_DATETIME},
+    {title:'创建时间',dataIndex:'create_time',key:'create_time',hideInColumn:false,hideInSearch:false,type:COLUMN_DATETIME},
+    {title:'备注',dataIndex:'remark',key:'remark',hideInColumn:false,hideInSearch:true,type:COLUMN_CONTENT},
+    {title:'操作',dataIndex:'action',key:'action',hideInColumn:false,hideInSearch:false,type:'action',actions:[
+        {component:COMPONENT_ICON_BUTTON,text:'详情',type:BUTTON_TYPE_DEFAULT,icon:ICON_TYPE_GET,action:ACTION_TYPE_PAGE,uri:'/detail',mehtod:'get'},
+        {component:COMPONENT_ICON_BUTTON,text:'编辑',type:BUTTON_TYPE_GHOST,icon:ICON_TYPE_EDIT,action:ACTION_TYPE_MODAL,uri:'',mehtod:'put'},
+        {component:COMPONENT_ICON_BUTTON,text:'分组',type:BUTTON_TYPE_GHOST,icon:ICON_TYPE_GROUP,action:ACTION_TYPE_GROUPING,uri:'',mehtod:'put'},
+        {component:COMPONENT_ICON_BUTTON,text:'用户派遣',type:BUTTON_TYPE_GHOST,icon:ICON_TYPE_ASSIGN,action:ACTION_TYPE_ASSIGN,uri:'',mehtod:'put'},
+        {component:COMPONENT_ICON_BUTTON,text:'密码重置',type:BUTTON_TYPE_GHOST,icon:ICON_TYPE_RESET_KEY,action:ACTION_TYPE_PASSWORDRESET,uri:'',mehtod:'put'},
+        {component:COMPONENT_ICON_BUTTON,text:'删除',type:BUTTON_TYPE_DEFAULT,icon:ICON_TYPE_DELETE,action:ACTION_TYPE_DELETE,uri:'',mehtod:'delete'}
+    ]}
+]
+
+const tabletoolbarfield=[
+    {component:COMPONENT_BUTTON,text:'新建',type:BUTTON_TYPE_PRIMARY,action:ACTION_TYPE_MODAL,icon:ICON_TYPE_ADD,uri:'',mehtod:'post'},
+    {component:COMPONENT_BUTTON,text:'导出',type:BUTTON_TYPE_DEFAULT,action:ACTION_TYPE_EXPORT,icon:ICON_TYPE_EXPORT,uri:'',mehtod:'get'},
+    {component:COMPONENT_BUTTON,text:'刷新',type:BUTTON_TYPE_DEFAULT,action:ACTION_TYPE_RELOAD,icon:ICON_TYPE_RELOAD}
+]
+export const listlayout = {
+            tableColumn:tablecolumnfield,
+            tableToolBar:tabletoolbarfield,
+            batchToolBar:[
+                {component:COMPONENT_BUTTON,text:'删除',type:BUTTON_TYPE_DANGER,action:ACTION_TYPE_DELETE_PERMANENT,icon:'',uri:''}
+            ]
+        }
+
+// form
+const formfield=[
+    {title:'NO',dataIndex:'id',key:'id',type:FORM_FIELD_TEXT,disabled:true,rules:[]},
+    {title:'昵称',dataIndex:'nickname',key:'nickname',disabled:false,type:FORM_FIELD_TEXT,rules:[
+        {required: true,message: '必填项！'}
+    ]},
+    {title:'姓名',dataIndex:'realname',key:'realname',disabled:false,type:FORM_FIELD_TEXT,rules:[
+        {required: true,message: '必填项！'}
+    ]},
+    {title:'性别',dataIndex:'gender',key:'gender',disabled:false,type:FORM_FIELD_SELECT,rules:[],data:[
+        {value:1,title:'男'},{value:2,title:'女'},{value:3,title:'其他'}
+    ]},
+    {title:'邮箱',dataIndex:'email',key:'email',disabled:false,type:FORM_FIELD_TEXT,rules:[
+        {required: true,message: '必填项！'},{pattern: regex_email,message: '邮箱格式不正确!'}
+    ]},
+    {title:'手机号',dataIndex:'mobile',key:'mobile',disabled:false,type:FORM_FIELD_TEXT,rules:[
+        {required: true,message: '必填项！'},{pattern: regex_mobile,message: '不合法的手机号！'}
+    ]},
+    {title:'身份证号',dataIndex:'id_number',key:'id_number',disabled:false,type:FORM_FIELD_TEXT,rules:[]}
+]
+
+const formhanlder=[
+    {
+        component:COMPONENT_BUTTON,
+        text:'重置',
+        icon:ICON_TYPE_RELOAD,
+        type:BUTTON_TYPE_DASHED,
+        action:ACTION_TYPE_RESET
+    },
+    {
+        component:COMPONENT_BUTTON,
+        text:'取消',
+        icon:ICON_TYPE_CANCEL,
+        type:BUTTON_TYPE_DEFAULT,
+        action:ACTION_TYPE_CANCEL
+    },
+    {
+        component:COMPONENT_BUTTON,
+        text:'提交',
+        icon:ICON_TYPE_SUBMIT,
+        type:BUTTON_TYPE_PRIMARY,
+        action:ACTION_TYPE_SUBMIT
+    }
+]
+export const pagelayout = {
+    tabs:[
+        {
+            name:"user",
+            title:"用户",
+            data:formfield
+        }
+    ],
+    actions:[
+        {
+            name:'actions',
+            title:'操作',
+            data:formhanlder
+        }
+    ]
+} 
